@@ -1,0 +1,41 @@
+<html><head><meta charset="utf-8"><title>認証方式</title>
+<style>body{font-family:sans-serif;margin:24px;line-height:1.7} code{background:#f3f3f3;padding:1px 4px}</style></head>
+<body>
+<h1>認証方式</h1>
+<p>API は OAuth 2.0 の Bearer トークンで認証します。トークンは認証サーバから受け取り、API を呼ぶたびにヘッダに付けます。</p>
+
+<h2>トークンの受け取り方</h2>
+<ol>
+<li>利用者をログイン画面に案内する。</li>
+<li>ログインに成功すると、指定した戻り先に一時的なコードが渡される。</li>
+<li>そのコードを認証サーバに送り、アクセストークンとリフレッシュトークンを受け取る。</li>
+</ol>
+
+<h2>トークンの付け方</h2>
+<pre>Authorization: Bearer (アクセストークン)</pre>
+<p>トークンをアドレスの後ろ (クエリ文字列) に付けてはいけません。サーバのログやブラウザの履歴に残ってしまうためです。</p>
+
+<h2>有効期限</h2>
+<ul>
+<li>アクセストークンの有効期限は 1 時間です。</li>
+<li>期限が切れると 401 が返るので、リフレッシュトークンを使って新しいアクセストークンを受け取ってください。</li>
+<li>リフレッシュトークンの有効期限は 30 日です。使うたびに新しいものに入れ替わります。</li>
+</ul>
+
+<h2>権限の範囲</h2>
+<p>トークンには、何ができるかを表す「スコープ」が付いています。必要なスコープだけを求めてください。</p>
+<ul>
+<li><code>users:read</code> 利用者の情報を読む</li>
+<li><code>users:write</code> 利用者の情報を書き換える</li>
+<li><code>orders:read</code> 注文の情報を読む</li>
+<li><code>orders:write</code> 注文を作る、取り消す</li>
+</ul>
+
+<h2>やってはいけないこと</h2>
+<ul>
+<li>トークンをソースコードや設定ファイルに直接書く。</li>
+<li>トークンを Slack やメールで送る。</li>
+<li>テスト用のトークンを本番で使う。</li>
+</ul>
+<p>関連: <a href="endpoints.html">API エンドポイント一覧</a></p>
+</body></html>

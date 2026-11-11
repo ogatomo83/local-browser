@@ -1,0 +1,17 @@
+[workspace]
+resolver = "3"
+members = ["core", "extract", "host", "extractor", "web"]
+# extractor は wasm32-wasip2 向けにだけビルドする (Makefile 参照)
+default-members = ["host"]
+
+[profile.release]
+opt-level = 3
+
+[profile.release.package.extractor]
+opt-level = "s"
+
+[profile.release.package.lb-extract]
+opt-level = "s"
+
+[profile.release.package.lb-web]
+opt-level = "s"

@@ -1,0 +1,32 @@
+package local-browser:extractor@0.1.0;
+
+/// 文書の中身を読み取る契約。
+/// 実装 (wasm コンポーネント) はファイルシステムにもネットワークにも触れない。
+/// ホストがバイト列を渡し、構造化された結果を受け取るだけ。
+interface extract {
+    record heading {
+        level: u8,
+        text: string,
+        /// 見出しのアンカー ID (html 内の id 属性と一致)
+        anchor: string,
+    }
+
+    record document {
+        title: string,
+        headings: list<heading>,
+        /// 全文検索用のプレーンテキスト
+        body: string,
+        /// 表示用 HTML (生の HTML はエスケープ済み)
+        html: string,
+    }
+
+    /// 対応している拡張子 (小文字、ドットなし)
+    supported-extensions: func() -> list<string>;
+
+    /// path は表示・タイトル推定用。content はファイルの中身。
+    extract: func(path: string, content: list<u8>) -> result<document, string>;
+}
+
+world extractor {
+    export extract;
+}

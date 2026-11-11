@@ -1,0 +1,12 @@
+[package]
+name = "lb-core"
+version = "0.1.0"
+edition = "2024"
+description = "検索の中心部分。ファイル操作・DB・スレッドに依存しない純粋な Rust (ネイティブと wasm32-unknown-unknown の両方でビルドする)"
+
+[dependencies]
+fst = "0.4"
+unicode-normalization = "0.1"
+serde = { version = "1", features = ["derive"] }
+blake3 = { version = "1", default-features = false, features = ["std"] }
+serde_json = "1"

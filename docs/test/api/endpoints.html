@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>API エンドポイント一覧</title>
+<style>body{font-family:sans-serif;margin:24px;line-height:1.7} table{border-collapse:collapse} th,td{border:1px solid #ccc;padding:6px 10px} code{background:#f3f3f3;padding:1px 4px}</style>
+</head>
+<body>
+<h1>API エンドポイント一覧</h1>
+<p>公開している API の一覧です。すべての API は <code>/v1</code> から始まり、応答は JSON で返します。
+認証が必要な API には、ヘッダに Bearer トークンを付けてください。詳しくは <a href="auth.htm">認証方式</a> を見てください。</p>
+
+<h2>利用者</h2>
+<table>
+<tr><th>メソッド</th><th>パス</th><th>説明</th><th>認証</th></tr>
+<tr><td>GET</td><td>/v1/users</td><td>利用者の一覧を返す。名前やメールアドレスで絞り込める</td><td>必要</td></tr>
+<tr><td>POST</td><td>/v1/users</td><td>利用者を新しく登録する</td><td>必要 (管理者)</td></tr>
+<tr><td>GET</td><td>/v1/users/{id}</td><td>利用者 1 人の情報を返す</td><td>必要</td></tr>
+<tr><td>PATCH</td><td>/v1/users/{id}</td><td>利用者の情報を一部更新する</td><td>必要 (本人か管理者)</td></tr>
+<tr><td>DELETE</td><td>/v1/users/{id}</td><td>利用者を退会扱いにする。データはすぐには消さない</td><td>必要 (管理者)</td></tr>
+</table>
+
+<h2>商品</h2>
+<table>
+<tr><th>メソッド</th><th>パス</th><th>説明</th><th>認証</th></tr>
+<tr><td>GET</td><td>/v1/products</td><td>商品の一覧を返す。分類や価格の範囲で絞り込める</td><td>不要</td></tr>
+<tr><td>GET</td><td>/v1/products/{id}</td><td>商品 1 件の詳細を返す</td><td>不要</td></tr>
+<tr><td>GET</td><td>/v1/products/search</td><td>商品名と説明文を全文検索する</td><td>不要</td></tr>
+</table>
+
+<h2>注文</h2>
+<table>
+<tr><th>メソッド</th><th>パス</th><th>説明</th><th>認証</th></tr>
+<tr><td>POST</td><td>/v1/orders</td><td>注文を作る。在庫が足りない場合は 409 を返す</td><td>必要</td></tr>
+<tr><td>GET</td><td>/v1/orders/{id}</td><td>注文 1 件の状態を返す</td><td>必要 (本人か管理者)</td></tr>
+<tr><td>POST</td><td>/v1/orders/{id}/cancel</td><td>注文を取り消す。発送後は取り消せない</td><td>必要 (本人か管理者)</td></tr>
+</table>
+
+<h2>エラーの返し方</h2>
+<p>エラーのときは、次の形の JSON を返します。<code>code</code> は機械が判断するための値、<code>message</code> は人が読むための説明です。</p>
+<pre>{
+  "code": "out_of_stock",
+  "message": "在庫が足りません",
+  "request_id": "01JC8Z..."
+}</pre>
+<table>
+<tr><th>状態コード</th><th>意味</th></tr>
+<tr><td>400</td><td>入力の値が正しくない</td></tr>
+<tr><td>401</td><td>認証されていない、またはトークンの期限が切れている</td></tr>
+<tr><td>403</td><td>権限がない</td></tr>
+<tr><td>404</td><td>対象が見つからない</td></tr>
+<tr><td>409</td><td>状態が合わない (在庫切れ、二重の登録など)</td></tr>
+<tr><td>429</td><td>呼び出しが多すぎる。1 分あたり 600 回まで</td></tr>
+</table>
+
+<h2>API を追加・変更するときの決まり</h2>
+<ul>
+<li>既存の API の応答から項目を消したり、意味を変えたりしない。必要なら <code>/v2</code> を作る。</li>
+<li>項目の追加は自由にしてよい。呼び出す側は、知らない項目を無視するように作る。</li>
+<li>この一覧を更新してから、プルリクエストを出す。</li>
+</ul>
+</body></html>

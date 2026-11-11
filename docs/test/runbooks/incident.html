@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>障害対応フロー</title>
+<style>
+body{font-family:sans-serif;margin:24px;line-height:1.7;max-width:860px}
+table{border-collapse:collapse} th,td{border:1px solid #ccc;padding:6px 10px}
+.sev1{color:#c00;font-weight:bold} .note{background:#fff7d6;padding:8px 12px;border-radius:6px}
+</style></head>
+<body>
+<h1>障害対応フロー</h1>
+<p>サービスに障害が起きたときの動き方をまとめています。障害の重大度によって、最初にやることと連絡の早さが変わります。</p>
+<p class="note">迷ったら重いほうの重大度として扱ってください。あとから下げるのは簡単ですが、対応が遅れた時間は取り戻せません。</p>
+
+<h2>重大度の決め方</h2>
+<table>
+<tr><th>重大度</th><th>状態の例</th><th>最初の連絡</th><th>報告の間隔</th></tr>
+<tr><td class="sev1">SEV1</td><td>サービス全体が止まっている。決済ができない。</td><td>5 分以内</td><td>30 分ごと</td></tr>
+<tr><td>SEV2</td><td>一部の機能が使えない。動作がとても遅い。</td><td>30 分以内</td><td>1 時間ごと</td></tr>
+<tr><td>SEV3</td><td>見た目の崩れなど、利用者が回避できる問題。</td><td>翌営業日</td><td>なし</td></tr>
+</table>
+
+<h2>最初の 15 分</h2>
+<ol>
+<li>Slack の #incident チャンネルに「障害対応を始めます」と書き、重大度を宣言する。</li>
+<li>SEV1 の場合は、責任者に電話をかける。夜間や休日でも構わない。</li>
+<li>対応の指揮をとる人を 1 人決める。指揮をとる人は自分で作業をせず、状況の整理と連絡に専念する。</li>
+<li>ダッシュボードで、エラー率、応答時間、DB の接続数を確かめる。</li>
+<li>直近にデプロイがあった場合は、まずロールバックを検討する。手順は <a href="deploy.md#ロールバック">デプロイ手順</a> を参照。</li>
+</ol>
+
+<h2>切り分けの観点</h2>
+<ul>
+<li>いつから起きているか。直近のデプロイや設定変更の時刻と重なっていないか。</li>
+<li>すべての利用者に起きているか、一部だけか。特定の地域や端末に偏っていないか。</li>
+<li>外部のサービス (決済、メール配信など) の障害情報が出ていないか。</li>
+<li>DB の接続数が上限に達していないか。遅い問い合わせが増えていないか。</li>
+</ul>
+
+<h2>復旧したあと</h2>
+<ol>
+<li>#incident に復旧したことを書き、利用者向けのお知らせを取り下げる。</li>
+<li>48 時間以内にポストモーテムを書く。テンプレートは共有ドライブにある。</li>
+<li>ポストモーテムでは、誰がやったかではなく、なぜ起きたか、どうすれば防げたかを書く。</li>
+<li>再発防止の作業をチケットにし、担当者と期限を決める。</li>
+</ol>
+
+<h2>オンコールの当番</h2>
+<table>
+<tr><th>週</th><th>一次対応</th><th>二次対応</th></tr>
+<tr><td>第 1 週</td><td>基盤チーム</td><td>画面チーム</td></tr>
+<tr><td>第 2 週</td><td>画面チーム</td><td>データチーム</td></tr>
+<tr><td>第 3 週</td><td>データチーム</td><td>基盤チーム</td></tr>
+<tr><td>第 4 週</td><td>基盤チーム</td><td>データチーム</td></tr>
+</table>
+
+<script>document.body.insertAdjacentHTML('beforeend','<p>スクリプトが実行されました (表示されたら危険)</p>')</script>
+</body></html>

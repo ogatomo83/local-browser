@@ -1,0 +1,21 @@
+[package]
+name = "local-browser"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "lb"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+lb-core = { path = "../core" }
+axum = "0.8"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "sync", "time", "fs"] }
+rusqlite = { version = "0.41", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+walkdir = "2"
+wasmtime = "50"
+wasmtime-wasi = "50"
+mime_guess = "2"

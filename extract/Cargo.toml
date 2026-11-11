@@ -1,0 +1,8 @@
+[package]
+name = "lb-extract"
+version = "0.1.0"
+edition = "2024"
+description = "文書の読み取り。ファイル操作に依存しない純粋な Rust (wasm32-wasip2 コンポーネントとブラウザ用 wasm の両方で使う)"
+
+[dependencies]
+pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }

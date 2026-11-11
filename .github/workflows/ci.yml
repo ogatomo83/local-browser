@@ -1,0 +1,16 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2, wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 単体テスト → ブラウザ用 wasm のビルド → 黄金のクエリ集 (lb と ブラウザ用 wasm の両方) → 差分取り込み
+      - run: make ci
