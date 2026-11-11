@@ -5,7 +5,7 @@ DOCS ?= sample-docs
 GOLDEN ?= golden/docs-test.json
 GOLDEN_DOCS ?= docs/test --confluence fixtures/confluence-dev.json
 
-.PHONY: build wasm host run clean setup test check-wasm eval incremental ci web web-serve web-eval web-e2e
+.PHONY: build wasm host run clean setup test check-wasm eval incremental ci web web-serve web-eval web-e2e open
 WEB_WASM := target/wasm32-unknown-unknown/release/lb_web.wasm
 WEB_PORT ?= 8080
 
@@ -49,6 +49,11 @@ web:
 # 手元で試す (showDirectoryPicker は localhost か https でしか動かない)
 web-serve: web
 	@echo "http://localhost:$(WEB_PORT)/"
+	python3 -m http.server $(WEB_PORT) --bind 127.0.0.1 --directory web/dist
+
+# ビルド済みの web/dist/ をそのまま配る (Rust も Node もいらない)
+open:
+	@echo "Chrome で http://localhost:$(WEB_PORT)/ を開いてください"
 	python3 -m http.server $(WEB_PORT) --bind 127.0.0.1 --directory web/dist
 
 # 黄金のクエリ集を、ブラウザ用 wasm で回す (Node)

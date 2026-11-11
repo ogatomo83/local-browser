@@ -14,6 +14,19 @@ make ci                        # 単体テスト + ブラウザ用 wasm のビ�
 
 ### モード C: ブラウザだけで使う (サーバーなし)
 
+**Rust も Node もいらない: ビルド済みのアプリ (`web/dist/`) がリポジトリに入っている。**
+macOS に最初から入っている python3 で配って、Chrome で開くだけ:
+
+```sh
+git clone https://github.com/ogatomo83/local-browser && cd local-browser
+make open                      # → http://localhost:8080/ (WEB_PORT=8081 などで変更)
+# make がなければ: python3 -m http.server 8080 --bind 127.0.0.1 --directory web/dist
+```
+
+(ファイルを直接ダブルクリックで開く file:// では動かない。Worker と wasm の読み込みに http が要るため)
+
+ソースを変えたら `make web` で `web/dist/` を作り直してコミットする。手元でビルドして試すとき:
+
 ```sh
 make web-serve                 # web/dist/ を組み立てて http://localhost:8080/ で配る (WEB_PORT で変更)
 ```

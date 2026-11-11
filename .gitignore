@@ -1,5 +1,4 @@
 /target
-/web/dist
 .DS_Store
 *.db
 *.db.store/
